@@ -12,17 +12,17 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 w-full pt-32 pb-20 px-4 lg:px-8">
-        <div className="ml-auto" style={{ maxWidth: '60%' }}>
+        <div className="ml-auto" style={{ maxWidth: '50%' }}>
           {/* Right-aligned Text and CTA */}
           <div className="text-center lg:text-left space-y-6">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
               Emotion Aware Therapy{" "}
-              <span className="bg-gradient-cosmic bg-clip-text text-transparent">
+              <span className="bg-gradient-cosmic bg-clip-text text-transparent drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
                 AI and ML
               </span>
             </h1>
             
-            <p className="text-lg md:text-xl text-white/90 max-w-2xl">
+            <p className="text-lg md:text-xl text-white max-w-2xl drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
               Experience instant self-care with personalized wellness and meditation guidance. 
               No counselors, no appointments—just AI-powered support tailored to your emotional journey.
             </p>
@@ -37,7 +37,7 @@ const Hero = () => {
               </Button>
             </div>
 
-            <p className="text-sm text-white/70 pt-4">
+            <p className="text-sm text-white pt-4 drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
               ✨ No pressure. No medical advice. Just you and AI-powered wellness.
             </p>
           </div>
