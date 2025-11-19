@@ -7,29 +7,20 @@ const Hero = () => {
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: 'url(/assets/images/hero-bg.jpg)' }}
+        style={{ backgroundImage: 'url(/assets/images/FeBg.jpg)' }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-navy/60 via-deep-purple/50 to-background/90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-navy/30 via-deep-purple/20 to-background/70" />
       </div>
 
       {/* Content */}
       <div className="container relative z-10 mx-auto px-4 lg:px-8 pt-32 pb-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left: Logo */}
-          <div className="flex justify-center lg:justify-start">
-            <img 
-              src="/assets/images/logoF0.png" 
-              alt="Adiyogi" 
-              className="w-full max-w-md lg:max-w-lg h-auto drop-shadow-2xl animate-fade-in"
-            />
-          </div>
-
-          {/* Right: Text and CTA */}
-          <div className="text-center lg:text-left space-y-6">
+        <div className="flex justify-center items-center">
+          {/* Centered Text and CTA */}
+          <div className="text-center space-y-6 max-w-4xl">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-              Emotion-Aware Therapy,{" "}
+              Emotion Aware Therapy{" "}
               <span className="bg-gradient-cosmic bg-clip-text text-transparent">
-                Powered by AI
+                AI and ML
               </span>
             </h1>
             
@@ -38,7 +29,7 @@ const Hero = () => {
               No counselors, no appointments—just AI-powered support tailored to your emotional journey.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
               <Button 
                 size="lg" 
                 className="bg-gradient-cosmic text-white font-semibold shadow-glow hover:shadow-xl transition-all duration-300 text-lg px-8"
