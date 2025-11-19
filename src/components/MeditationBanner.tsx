@@ -42,7 +42,7 @@ const MeditationBanner = () => {
             <Button 
               size="lg" 
               variant="outline" 
-              className="border-white text-white hover:bg-white hover:text-navy font-semibold transition-all duration-300"
+              className="border-white bg-transparent text-white hover:bg-white hover:text-navy font-semibold transition-all duration-300"
             >
               Read Recovery Stories
             </Button>
