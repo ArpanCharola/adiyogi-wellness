@@ -8,15 +8,13 @@ const Hero = () => {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: 'url(/assets/images/FeBg.jpg)' }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-b from-navy/30 via-deep-purple/20 to-background/70" />
-      </div>
+      />
 
       {/* Content */}
-      <div className="container relative z-10 mx-auto px-4 lg:px-8 pt-32 pb-20">
-        <div className="flex justify-center items-center">
-          {/* Centered Text and CTA */}
-          <div className="text-center space-y-6 max-w-4xl">
+      <div className="relative z-10 w-full pt-32 pb-20 px-4 lg:px-8">
+        <div className="ml-auto" style={{ maxWidth: '60%' }}>
+          {/* Right-aligned Text and CTA */}
+          <div className="text-center lg:text-left space-y-6">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
               Emotion Aware Therapy{" "}
               <span className="bg-gradient-cosmic bg-clip-text text-transparent">
