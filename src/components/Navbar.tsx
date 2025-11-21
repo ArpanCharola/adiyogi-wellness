@@ -1,13 +1,19 @@
 import { useState } from "react";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTheme } from "next-themes";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const { theme, setTheme } = useTheme();
 
   const toggleDropdown = (menu: string) => {
     setActiveDropdown(activeDropdown === menu ? null : menu);
+  };
+
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
   };
 
   return (
@@ -108,6 +114,19 @@ const Navbar = () => {
             <a href="#about" className="text-foreground hover:text-primary transition-colors font-medium">
               About
             </a>
+
+            {/* Dark Mode Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg hover:bg-muted transition-colors"
+              aria-label="Toggle theme"
+            >
+              {theme === "dark" ? (
+                <Sun className="w-5 h-5 text-foreground" />
+              ) : (
+                <Moon className="w-5 h-5 text-foreground" />
+              )}
+            </button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -164,6 +183,24 @@ const Navbar = () => {
             <a href="#about" className="block py-2 text-foreground hover:text-primary transition-colors font-medium">
               About
             </a>
+            
+            {/* Mobile Dark Mode Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="flex items-center gap-2 py-2 text-foreground hover:text-primary transition-colors font-medium"
+            >
+              {theme === "dark" ? (
+                <>
+                  <Sun className="w-5 h-5" />
+                  <span>Light Mode</span>
+                </>
+              ) : (
+                <>
+                  <Moon className="w-5 h-5" />
+                  <span>Dark Mode</span>
+                </>
+              )}
+            </button>
           </div>
         )}
       </div>
