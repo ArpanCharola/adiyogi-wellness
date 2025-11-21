@@ -27,8 +27,6 @@ const Hero = () => {
               <span className="bg-gradient-cosmic bg-clip-text text-transparent">
                 Emotion Aware Therapy System
               </span>
-              {" "}
-              <span className="text-foreground">using AI and ML</span>
             </h1>
             
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0">
