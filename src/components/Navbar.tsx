@@ -52,7 +52,7 @@ const Navbar = () => {
               </button>
               {activeDropdown === "getting-started" && (
                 <div className="absolute top-full mt-2 w-56 bg-popover border border-border rounded-lg shadow-card py-2 z-50">
-                  <a href="#assessment" className="block px-4 py-2 hover:bg-muted transition-colors">
+                  <a href="/assessment" className="block px-4 py-2 hover:bg-muted transition-colors">
                     Free Assessment
                   </a>
                   <a href="#anxiety-test" className="block px-4 py-2 hover:bg-muted transition-colors">
@@ -149,7 +149,7 @@ const Navbar = () => {
             </a>
             <div className="py-2">
               <div className="font-medium text-muted-foreground text-sm mb-1">Getting Started</div>
-              <a href="#assessment" className="block py-1.5 pl-4 text-foreground hover:text-primary transition-colors">
+              <a href="/assessment" className="block py-1.5 pl-4 text-foreground hover:text-primary transition-colors">
                 Free Assessment
               </a>
               <a href="#anxiety-test" className="block py-1.5 pl-4 text-foreground hover:text-primary transition-colors">

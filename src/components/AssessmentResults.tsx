@@ -200,10 +200,12 @@ const AssessmentResults = ({ answers, selectedIssues }: AssessmentResultsProps) 
           <div className="bg-muted/50 rounded-lg p-6">
             <h3 className="text-xl font-bold text-foreground mb-4">Recommendations</h3>
             <ul className="space-y-3 text-muted-foreground">
-              <li className="flex items-start gap-2">
-                <span className="text-primary mt-1">•</span>
-                <span>Consider speaking with a mental health professional for personalized guidance</span>
-              </li>
+              {totalScore > 60 && (
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-1">•</span>
+                  <span>Consider speaking with a mental health professional for personalized guidance</span>
+                </li>
+              )}
               <li className="flex items-start gap-2">
                 <span className="text-primary mt-1">•</span>
                 <span>Practice daily meditation and mindfulness exercises</span>
