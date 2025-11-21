@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import meditateImg from "@/assets/meditate.avif";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const navigate = useNavigate();
+  
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
       <div className="container mx-auto px-4 lg:px-8 py-32">
@@ -37,6 +40,7 @@ const Hero = () => {
               <Button 
                 size="lg" 
                 className="bg-gradient-cosmic text-white font-semibold shadow-glow hover:shadow-xl transition-all duration-300 text-lg px-8"
+                onClick={() => navigate("/assessment")}
               >
                 Take Your Free Wellness Assessment
                 <ArrowRight className="ml-2 w-5 h-5" />
