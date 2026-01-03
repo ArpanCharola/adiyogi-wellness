@@ -1,0 +1,12 @@
+transformers
+torch
+librosa
+soundfile
+SpeechBrain
+scipy
+numpy
+spacy
+pandas
+tqdm
+PyPDF2
+python-dotenv

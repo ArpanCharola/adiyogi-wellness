@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 240 100% 99%;
+    --foreground: 240 60% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 60% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 60% 10%;
+
+    --primary: 267 83% 57%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 202 98% 62%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 240 20% 96%;
+    --muted-foreground: 240 10% 46%;
+
+    --accent: 267 70% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 20% 90%;
+    --input: 240 20% 90%;
+    --ring: 267 83% 57%;
+
+    --radius: 0.75rem;
+
+    --navy: 240 73% 10%;
+    --deep-purple: 267 67% 36%;
+    --cosmic-blue: 202 98% 62%;
+    --cosmic-purple: 267 83% 57%;
+    
+    --gradient-cosmic: linear-gradient(135deg, hsl(var(--cosmic-purple)), hsl(var(--cosmic-blue)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--deep-purple)) 0%, hsl(var(--cosmic-purple)) 50%, hsl(var(--cosmic-blue)) 100%);
+    --shadow-glow: 0 10px 40px -10px hsl(var(--cosmic-purple) / 0.4);
+    --shadow-card: 0 4px 20px -4px hsl(240 20% 20% / 0.1);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 240 60% 10%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 50% 15%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 50% 15%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 267 83% 57%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 202 98% 62%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 240 40% 20%;
+    --muted-foreground: 240 10% 70%;
+
+    --accent: 267 70% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 40% 25%;
+    --input: 240 40% 25%;
+    --ring: 267 83% 57%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+  }
+}
