@@ -1,12 +1,24 @@
 import { useState } from "react";
-import { ChevronDown, Menu, X, Moon, Sun } from "lucide-react";
+import { ChevronDown, Menu, X, Moon, Sun, User, LogOut } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const { theme, setTheme } = useTheme();
+  const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
 
   const toggleDropdown = (menu: string) => {
@@ -82,7 +94,7 @@ const Navbar = () => {
               )}
             </div>
 
-            {/* Worksheets - NOW A REAL ROUTE */}
+            {/* Worksheets */}
             <Link
               to="/worksheets"
               className="text-foreground hover:text-primary transition-colors font-medium"
@@ -117,45 +129,43 @@ const Navbar = () => {
               )}
             </div>
 
-            {/* Interactives Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => toggleDropdown("interactives")}
-                className="flex items-center gap-1 text-foreground hover:text-primary transition-colors font-medium"
-              >
-                Interactives
-                <ChevronDown className="w-4 h-4" />
-              </button>
-              {activeDropdown === "interactives" && (
-                <div className="absolute top-full mt-2 w-56 bg-popover border border-border rounded-lg shadow-card py-2 z-50">
-                  <a
-                    href="#guided-audio"
-                    className="block px-4 py-2 hover:bg-muted transition-colors"
-                  >
-                    Guided Audio
-                  </a>
-                  <a
-                    href="#recovery-stories"
-                    className="block px-4 py-2 hover:bg-muted transition-colors"
-                  >
-                    Recovery Stories
-                  </a>
-                </div>
-              )}
-            </div>
-
-            <a
-              href="#contact"
-              className="text-foreground hover:text-primary transition-colors font-medium"
-            >
-              Contact
-            </a>
-            <a
-              href="#about"
-              className="text-foreground hover:text-primary transition-colors font-medium"
-            >
-              About
-            </a>
+            {/* Auth Section */}
+            {isAuthenticated ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                    <Avatar className="h-10 w-10">
+                      <AvatarImage src={user?.profile_photo} alt={user?.username} />
+                      <AvatarFallback>{user?.first_name?.[0]}{user?.last_name?.[0]}</AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">{user?.first_name} {user?.last_name}</p>
+                      <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigate("/profile")}>
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={logout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <div className="flex items-center gap-4">
+                <Link to="/login" className="text-foreground hover:text-primary transition-colors font-medium">
+                  Login
+                </Link>
+                <Button onClick={() => navigate("/signup")}>Sign Up</Button>
+              </div>
+            )}
 
             {/* Dark Mode Toggle */}
             <button
