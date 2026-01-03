@@ -59,6 +59,7 @@ MongoDB / PostgreSQL
 
 ### 1️⃣ Clone the repository
 git clone https://github.com/ArpanCharola/adiyogi-wellness.git
+
 cd adiyogi-wellness
 
 
