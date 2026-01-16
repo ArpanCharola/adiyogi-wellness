@@ -84,12 +84,10 @@ const Navbar = () => {
                   >
                     Free Assessment
                   </Link>
-                  <a
-                    href="#anxiety-test"
-                    className="block px-4 py-2 hover:bg-muted transition-colors"
-                  >
-                    Anxiety Test
-                  </a>
+
+                  <Link to="/anxiety-test" className="block px-4 py-2 hover:bg-muted transition-colors">
+                    Free Anxiety Test
+                  </Link>
                 </div>
               )}
             </div>
@@ -128,6 +126,14 @@ const Navbar = () => {
                 </div>
               )}
             </div>
+
+            {/* ADDED ABOUT LINK HERE */}
+            <Link
+              to="/about"
+              className="text-foreground hover:text-primary transition-colors font-medium"
+            >
+              About
+            </Link>
 
             {/* Auth Section */}
             {isAuthenticated ? (
@@ -227,7 +233,7 @@ const Navbar = () => {
               </a>
             </div>
 
-            {/* Worksheets - NOW A REAL ROUTE */}
+            {/* Worksheets */}
             <Link
               to="/worksheets"
               onClick={closeMobileMenu}
@@ -280,12 +286,15 @@ const Navbar = () => {
             >
               Contact
             </a>
-            <a
-              href="#about"
+            
+            {/* UPDATED ABOUT LINK */}
+            <Link
+              to="/about"
+              onClick={closeMobileMenu}
               className="block py-2 text-foreground hover:text-primary transition-colors font-medium"
             >
               About
-            </a>
+            </Link>
 
             {/* Mobile Dark Mode Toggle */}
             <button
