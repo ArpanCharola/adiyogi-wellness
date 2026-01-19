@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import type { Message, ChatResponse } from "@/lib/api";
+import { useNavigate } from "react-router-dom";
 
 const API_BASE_URL = "http://127.0.0.1:8000/api";
 
@@ -13,6 +14,7 @@ const makeSessionId = () =>
   "sess-" + Math.random().toString(36).slice(2, 10);
 
 const Chat = () => {
+  const navigate = useNavigate();
   const [sessionId] = useState(makeSessionId);
   const [name, setName] = useState("");
   const [mainConcern, setMainConcern] = useState("");
@@ -23,18 +25,42 @@ const Chat = () => {
   const [allMessages, setAllMessages] = useState<Message[]>([]);
   const [isSending, setIsSending] = useState(false);
 
-  // Load history once intake is done (usually empty for new session)
+  // Check if user is authenticated
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert("Please login first!");
+      navigate('/login');
+    }
+  }, [navigate]);
+
+  // Get auth headers
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem('token');
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': token ? `Token ${token}` : '',
+    };
+  };
+
+  // Load history once intake is done
   useEffect(() => {
     if (!intakeDone) return;
 
     (async () => {
       try {
         const res = await fetch(
-          `${API_BASE_URL}/session/${sessionId}/messages/`
+          `${API_BASE_URL}/session/${sessionId}/messages/`,
+          {
+            headers: getAuthHeaders()
+          }
         );
-        if (!res.ok) return; // 404 means no history yet
+        if (!res.ok) {
+          // Session doesn't exist yet, that's OK for first time
+          return;
+        }
         const data = (await res.json()) as ChatResponse;
-        setAllMessages(data.messages);
+        setAllMessages(data.messages || []);
       } catch (err) {
         console.error("getSessionMessages failed:", err);
       }
@@ -54,15 +80,20 @@ const Chat = () => {
     try {
       const res = await fetch(`${API_BASE_URL}/message/`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify({
           session_id: sessionId,
           issue: mainConcern.trim() || "general",
           user_message: trimmed,
         }),
       });
+
+      if (res.status === 401) {
+        alert("Session expired. Please login again.");
+        localStorage.removeItem('token');
+        navigate('/login');
+        return;
+      }
 
       if (!res.ok) {
         const errorBody = await res.json().catch(() => null);
@@ -71,7 +102,10 @@ const Chat = () => {
       }
 
       const data = (await res.json()) as ChatResponse;
-      setAllMessages((prev) => [...prev, ...data.messages]);
+      // Append new messages to existing ones
+      if (data.messages && Array.isArray(data.messages)) {
+        setAllMessages(prev => [...prev, ...data.messages]);
+      }
       setInput("");
     } catch (err) {
       console.error("createMessage error:", err);
@@ -132,6 +166,7 @@ const Chat = () => {
                 value={mainConcern}
                 onChange={(e) => setMainConcern(e.target.value)}
                 placeholder="e.g. anxiety and overthinking, breakup, work stress..."
+                required
               />
             </div>
 
@@ -161,18 +196,23 @@ const Chat = () => {
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {allMessages.length === 0 && (
-                <p className="text-sm text-muted-foreground text-center mt-8">
-                  You mentioned{" "}
-                  <span className="font-semibold">{mainConcern}</span>
-                  {currentEmotion
-                    ? ` and feeling ${currentEmotion}. When you're ready, type a message below to begin.`
-                    : ". When you're ready, type a message below to begin."}
-                </p>
+                <div className="text-center mt-8 space-y-2">
+                  <p className="text-sm text-muted-foreground">
+                    {name ? `Hi ${name}, ` : ""}you mentioned{" "}
+                    <span className="font-semibold">{mainConcern}</span>
+                    {currentEmotion
+                      ? ` and feeling ${currentEmotion}.`
+                      : "."}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    I'm here to listen. Whenever you're ready, share what's on your mind.
+                  </p>
+                </div>
               )}
 
-              {allMessages.map((m) => (
+              {allMessages.map((m, index) => (
                 <div
-                  key={m.id}
+                  key={m.id || index}
                   className={`flex ${
                     m.role === "user" ? "justify-end" : "justify-start"
                   }`}
@@ -185,11 +225,6 @@ const Chat = () => {
                     }`}
                   >
                     <p className="whitespace-pre-wrap">{m.text}</p>
-                    {m.emotion && (
-                      <p className="mt-1 text-[11px] opacity-70">
-                        {/* Emotion: {m.emotion} */}
-                      </p>
-                    )}
                   </div>
                 </div>
               ))}

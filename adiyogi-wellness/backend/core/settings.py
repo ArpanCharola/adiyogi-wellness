@@ -50,12 +50,13 @@ DEFAULT_AUTO_FIELD = "django_mongodb_backend.fields.ObjectIdAutoField"
 AUTH_USER_MODEL = "api.CustomUser"
 
 REST_FRAMEWORK = {
+    
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+        "rest_framework.permissions.AllowAny",  # Changed from IsAuthenticatedOrReadOnly
     ],
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",

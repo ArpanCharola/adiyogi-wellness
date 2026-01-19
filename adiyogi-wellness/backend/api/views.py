@@ -1,6 +1,8 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from .models import Session, Message, Ebook
 from .serializers import (
     MessageSerializer,
@@ -13,6 +15,7 @@ from .serializers import (
 from run_therapy.therapy_turn import run_therapy_turn  # type: ignore
 
 @api_view(["GET"])
+@permission_classes([AllowAny])
 def health_check(request):
     """
     Simple health check for monitoring / frontend.
@@ -20,6 +23,8 @@ def health_check(request):
     return Response({"status": "ok"}, status=status.HTTP_200_OK)
 
 @api_view(["POST"])
+@authentication_classes([TokenAuthentication, SessionAuthentication])
+@permission_classes([IsAuthenticated])
 def create_message(request):
     """
     Create or reuse a Session and append user + assistant messages.
@@ -36,10 +41,19 @@ def create_message(request):
     issue = validated.get("issue", "")
     user_message = validated["user_message"]
 
+    # Associate session with logged in user
     session, _created = Session.objects.get_or_create(
         session_id=session_id,
-        defaults={"issue": issue},
+        defaults={
+            "issue": issue,
+            "user": request.user  # Link session to authenticated user
+        },
     )
+    
+    # If session already exists but not linked to user, update it
+    if not session.user:
+        session.user = request.user
+        session.save()
 
     user_msg = Message.objects.create(
         session=session,
@@ -72,16 +86,23 @@ def create_message(request):
     )
 
 @api_view(["GET"])
+@authentication_classes([TokenAuthentication, SessionAuthentication])
+@permission_classes([IsAuthenticated])
 def get_session_messages(request, session_id: str):
     """
-    Get all messages for a given session_id.
+    Get all messages for a given session_id for the authenticated user.
     """
     try:
-        session = Session.objects.get(session_id=session_id)
+        # Only return sessions belonging to the authenticated user
+        session = Session.objects.get(session_id=session_id, user=request.user)
     except Session.DoesNotExist:
+        # Return empty list instead of 404 if session doesn't exist or doesn't belong to user
         return Response(
-            {"detail": "Session not found."},
-            status=status.HTTP_404_NOT_FOUND,
+            {
+                "session": None,
+                "messages": [],
+            },
+            status=status.HTTP_200_OK,
         )
 
     messages = session.messages.order_by("created_at")
@@ -97,6 +118,7 @@ def get_session_messages(request, session_id: str):
     )
 
 @api_view(["GET"])
+@permission_classes([AllowAny])
 def get_ebooks(request):
     category = request.query_params.get('category')
     featured = request.query_params.get('featured') == 'true'
@@ -109,10 +131,11 @@ def get_ebooks(request):
         ebooks = ebooks.filter(featured=True)
     
     serializer = EbookSerializer(ebooks, many=True)
-    return Response(serializer.data)  # ✅ This will now work
-
+    return Response(serializer.data)
 
 @api_view(["POST"])
+@authentication_classes([TokenAuthentication, SessionAuthentication])
+@permission_classes([IsAuthenticated])
 def download_ebook(request, slug):
     try:
         ebook = Ebook.objects.get(slug=slug)
